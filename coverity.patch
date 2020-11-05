@@ -1,0 +1,12 @@
+diff --git a/src/fptr.c b/src/fptr.c
+index cfe3aed..5d68c11 100644
+--- a/src/fptr.c
++++ b/src/fptr.c
+@@ -458,6 +458,7 @@ opd_size (struct prelink_info *info, GElf_Word entsize)
+ 	e->val = f->val;
+ 	e->gp = f->gp;
+ 	e->opd = ret | OPD_ENT_NEW;
++	f->ent = e;
+ 	ret += entsize;
+       }
+ 
