@@ -1,6 +1,6 @@
 Name:           execstack
 Version:        0.5.0
-Release:        15%{?dist}
+Release:        16
 Summary:        Utility to set/clear/query executable stack bit
 
 %global commit 4c79120bcdbde0616f592458ccde7035e92ca3d8
@@ -15,7 +15,6 @@ Patch1:  coverity.patch
 
 BuildRequires: elfutils-libelf-devel
 BuildRequires: libselinux-devel, libselinux-utils
-BuildRequires: git
 Requires: glibc >= 2.2.4-18, coreutils, findutils
 Requires: util-linux, gawk, grep
 
@@ -27,7 +26,7 @@ execstack binary. It can be used manipulate ELF binaries to run
 with or without executable stack.
 
 %prep
-%autosetup -n prelink-%{commit} -p1 -Sgit
+%autosetup -n prelink-%{commit} -p1
 
 %build
 sed -i -e '/^prelink_LDADD/s/$/ -lpthread/' src/Makefile.{am,in}
@@ -56,5 +55,8 @@ install -Dm0644 doc/execstack.8 %{buildroot}%{_mandir}/man8/execstack.8
 %{_mandir}/man8/execstack.8.*
 
 %changelog
+* Fri Jul 30 2021 chenyanpanHW <chenyanpan@huawei.com> - 0.5.0-16
+- DESC: delete -Sgit from %autosetup, and delete BuildRequires git
+
 * Fri Oct 30 2020 jiangxinyu <jiangxinyu@kylinos.cn> - 0.5.0-15
 - Init execstack project
