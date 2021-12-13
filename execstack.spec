@@ -1,6 +1,6 @@
 Name:           execstack
 Version:        0.5.0
-Release:        15%{?dist}
+Release:        16
 Summary:        Utility to set/clear/query executable stack bit
 
 %global commit 4c79120bcdbde0616f592458ccde7035e92ca3d8
@@ -56,5 +56,8 @@ install -Dm0644 doc/execstack.8 %{buildroot}%{_mandir}/man8/execstack.8
 %{_mandir}/man8/execstack.8.*
 
 %changelog
+* Mon Dec 13 2021 liqiuyu <liqiuyu@kylinos.cn> - 0.5.0-16
+- Remove the release suffix
+
 * Fri Oct 30 2020 jiangxinyu <jiangxinyu@kylinos.cn> - 0.5.0-15
 - Init execstack project
