@@ -1,6 +1,6 @@
 Name:           execstack
 Version:        0.5.0
-Release:        16
+Release:        17
 Summary:        Utility to set/clear/query executable stack bit
 
 %global commit 4c79120bcdbde0616f592458ccde7035e92ca3d8
@@ -15,6 +15,7 @@ Patch1:  coverity.patch
 
 BuildRequires: elfutils-libelf-devel
 BuildRequires: libselinux-devel, libselinux-utils
+BuildRequires: gcc-c++
 Requires: glibc >= 2.2.4-18, coreutils, findutils
 Requires: util-linux, gawk, grep
 
@@ -55,6 +56,9 @@ install -Dm0644 doc/execstack.8 %{buildroot}%{_mandir}/man8/execstack.8
 %{_mandir}/man8/execstack.8.*
 
 %changelog
+* Fri Feb 11 2022 jiangxinyu <jiangxinyu@kylinos.cn> - 0.5.0-17
+- Add BuildRequires: gcc-c++ solves build error
+
 * Fri Jul 30 2021 chenyanpanHW <chenyanpan@huawei.com> - 0.5.0-16
 - DESC: delete -Sgit from %autosetup, and delete BuildRequires git
 
