@@ -1,25 +1,25 @@
-Name:           execstack
-Version:        0.5.0
-Release:        17
-Summary:        Utility to set/clear/query executable stack bit
-
 %global commit 4c79120bcdbde0616f592458ccde7035e92ca3d8
 %global shortcommit %(c=%{commit}; echo ${c:0:7})
 
-License: GPLv2+
-# work around for missing upstream tarball with latest checkin
-Source0: https://github.com/keszybz/prelink/archive/%{commit}.tar.gz#/prelink-%{shortcommit}.tar.gz
+Name:           execstack
+Version:        0.5.0
+Release:        18
+Summary:        Utility to set/clear/query executable stack bit
+URL:		    https://github.com/keszybz/prelink
+License:        GPLv2+
 
-Patch0:  Add-PL_ARCH-for-AArch64.patch
-Patch1:  coverity.patch
+Source0:        https://github.com/keszybz/prelink/archive/%{commit}.tar.gz#/prelink-%{shortcommit}.tar.gz
 
-BuildRequires: elfutils-libelf-devel
-BuildRequires: libselinux-devel, libselinux-utils
-BuildRequires: gcc-c++
-Requires: glibc >= 2.2.4-18, coreutils, findutils
-Requires: util-linux, gawk, grep
+Patch0:         Add-PL_ARCH-for-AArch64.patch
+Patch1:         coverity.patch
 
-Obsoletes:     prelink < 0.5.0-8
+BuildRequires:  elfutils-libelf-devel
+BuildRequires:  libselinux-devel, libselinux-utils
+BuildRequires:  gcc-c++
+Requires:       glibc >= 2.2.4-18, coreutils, findutils
+Requires:       util-linux, gawk, grep
+
+Obsoletes:      prelink < 0.5.0-8
 
 %description
 This package is built from prelink sources but contains just the
@@ -56,6 +56,9 @@ install -Dm0644 doc/execstack.8 %{buildroot}%{_mandir}/man8/execstack.8
 %{_mandir}/man8/execstack.8.*
 
 %changelog
+* Wed Mar 30 2022 jiangxinyu <jiangxinyu@kylinos.cn> - 0.5.0-18
+- Add url field
+
 * Fri Feb 11 2022 jiangxinyu <jiangxinyu@kylinos.cn> - 0.5.0-17
 - Add BuildRequires: gcc-c++ solves build error
 

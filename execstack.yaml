@@ -1,0 +1,5 @@
+---
+version_control: github
+src_repo: keszybz/prelink
+tag_prefix: ^v
+separator: "."
