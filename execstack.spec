@@ -12,7 +12,9 @@ Source0: https://github.com/keszybz/prelink/archive/%{commit}.tar.gz#/prelink-%{
 
 Patch0:  Add-PL_ARCH-for-AArch64.patch
 Patch1:  coverity.patch
+%ifarch loongarch64
 Patch2:  0001-add-loongarch64-support.patch
+%endif
 
 BuildRequires: elfutils-libelf-devel
 BuildRequires: libselinux-devel, libselinux-utils
