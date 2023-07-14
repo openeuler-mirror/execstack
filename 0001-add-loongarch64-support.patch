@@ -1,0 +1,111 @@
+From 0724f0be79e86590eca267a2e1f4d22d2962d837 Mon Sep 17 00:00:00 2001
+From: doupengda <doupengda@loongson.cn>
+Date: Wed, 1 Feb 2023 10:15:40 +0800
+Subject: [PATCH] add loongarch64 support
+
+---
+ src/Makefile.am        |  2 +-
+ src/Makefile.in        |  7 ++++---
+ src/arch-loongarch64.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 43 insertions(+), 4 deletions(-)
+ create mode 100644 src/arch-loongarch64.c
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index a4c65f2..c18d0fd 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -13,7 +13,7 @@ bin_PROGRAMS = execstack
+ arch_SOURCES = arch-i386.c arch-alpha.c arch-ppc.c arch-ppc64.c \
+ 	       arch-sparc.c arch-sparc64.c arch-x86_64.c arch-mips.c \
+ 	       arch-s390.c arch-s390x.c arch-arm.c arch-sh.c arch-ia64.c \
+-	       arch-aarch64.c
++	       arch-aarch64.c arch-loongarch64.c
+ common_SOURCES = checksum.c data.c dso.c dwarf2.c dwarf2.h fptr.c fptr.h     \
+ 		 hashtab.c hashtab.h mdebug.c prelink.h stabs.c crc32.c
+ prelink_SOURCES = cache.c conflict.c cxx.c doit.c exec.c execle_open.c get.c \
+diff --git a/src/Makefile.in b/src/Makefile.in
+index 863dc83..7a70b68 100644
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -108,7 +108,7 @@ bin_PROGRAMS = execstack
+ arch_SOURCES = arch-i386.c arch-alpha.c arch-ppc.c arch-ppc64.c \
+ 	       arch-sparc.c arch-sparc64.c arch-x86_64.c arch-mips.c \
+ 	       arch-s390.c arch-s390x.c arch-arm.c arch-sh.c arch-ia64.c \
+-	       arch-aarch64.c
++	       arch-aarch64.c arch-loongarch64.c
+ 
+ common_SOURCES = checksum.c data.c dso.c dwarf2.c dwarf2.h fptr.c fptr.h     \
+ 		 hashtab.c hashtab.h mdebug.c prelink.h stabs.c crc32.c
+@@ -141,7 +141,7 @@ am__objects_2 = arch-i386.$(OBJEXT) arch-alpha.$(OBJEXT) \
+ 	arch-sparc64.$(OBJEXT) arch-x86_64.$(OBJEXT) \
+ 	arch-mips.$(OBJEXT) arch-s390.$(OBJEXT) arch-s390x.$(OBJEXT) \
+ 	arch-arm.$(OBJEXT) arch-sh.$(OBJEXT) arch-ia64.$(OBJEXT) \
+-	arch-aarch64.$(OBJEXT)
++	arch-aarch64.$(OBJEXT) arch-loongarch64.$(OBJEXT)
+ am_execstack_OBJECTS = execstack.$(OBJEXT) $(am__objects_1) \
+ 	$(am__objects_2)
+ execstack_OBJECTS = $(am_execstack_OBJECTS)
+@@ -165,7 +165,7 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
+ am__depfiles_maybe = depfiles
+ @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/arch-alpha.Po \
+ @AMDEP_TRUE@	./$(DEPDIR)/arch-arm.Po ./$(DEPDIR)/arch-aarch64.Po ./$(DEPDIR)/arch-i386.Po \
+-@AMDEP_TRUE@	./$(DEPDIR)/arch-ia64.Po ./$(DEPDIR)/arch-mips.Po \
++@AMDEP_TRUE@	./$(DEPDIR)/arch-ia64.Po ./$(DEPDIR)/arch-mips.Po ./$(DEPDIR)/arch-loongarch64.Po \
+ @AMDEP_TRUE@	./$(DEPDIR)/arch-ppc.Po ./$(DEPDIR)/arch-ppc64.Po \
+ @AMDEP_TRUE@	./$(DEPDIR)/arch-s390.Po ./$(DEPDIR)/arch-s390x.Po \
+ @AMDEP_TRUE@	./$(DEPDIR)/arch-sh.Po ./$(DEPDIR)/arch-sparc.Po \
+@@ -283,6 +283,7 @@ distclean-compile:
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/arch-i386.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/arch-ia64.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/arch-mips.Po@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/arch-loongarch64.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/arch-ppc.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/arch-ppc64.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/arch-s390.Po@am__quote@
+diff --git a/src/arch-loongarch64.c b/src/arch-loongarch64.c
+new file mode 100644
+index 0000000..fcb1951
+--- /dev/null
++++ b/src/arch-loongarch64.c
+@@ -0,0 +1,38 @@
++/* Copyright (C) 2015 Red Hat, Inc.
++   Written by Mark Salter <msalter@redhat.com>, 2015.
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 2, or (at your option)
++   any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software Foundation,
++   Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
++
++#include <config.h>
++#include <assert.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <stdio.h>
++#include <string.h>
++#include <locale.h>
++#include <error.h>
++#include <argp.h>
++#include <stdlib.h>
++
++#include "prelink.h"
++
++PL_ARCH = {
++  .name = "loongarch64",
++  .class = ELFCLASS64,
++  .machine = EM_LOONGARCH,
++  .alternate_machine = { EM_NONE },
++  .max_page_size = 0x10000,
++  .page_size = 0x1000
++};
+-- 
+2.33.0
+

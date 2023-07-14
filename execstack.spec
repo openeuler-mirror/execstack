@@ -1,6 +1,6 @@
 Name:           execstack
 Version:        0.5.0
-Release:        17
+Release:        18
 Summary:        Utility to set/clear/query executable stack bit
 
 %global commit 4c79120bcdbde0616f592458ccde7035e92ca3d8
@@ -12,6 +12,9 @@ Source0: https://github.com/keszybz/prelink/archive/%{commit}.tar.gz#/prelink-%{
 
 Patch0:  Add-PL_ARCH-for-AArch64.patch
 Patch1:  coverity.patch
+%ifarch loongarch64
+Patch2:  0001-add-loongarch64-support.patch
+%endif
 
 BuildRequires: elfutils-libelf-devel
 BuildRequires: libselinux-devel, libselinux-utils
@@ -56,6 +59,9 @@ install -Dm0644 doc/execstack.8 %{buildroot}%{_mandir}/man8/execstack.8
 %{_mandir}/man8/execstack.8.*
 
 %changelog
+* Wed Feb 1 2023 doupengda <doupengda@loongson.cn> - 0.5.0-18
+- add loongarch64 support
+
 * Fri Feb 11 2022 jiangxinyu <jiangxinyu@kylinos.cn> - 0.5.0-17
 - Add BuildRequires: gcc-c++ solves build error
 
