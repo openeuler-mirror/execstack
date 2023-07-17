@@ -3,7 +3,7 @@
 
 Name:           execstack
 Version:        0.5.0
-Release:        18
+Release:        19
 Summary:        Utility to set/clear/query executable stack bit
 URL:		    https://github.com/keszybz/prelink
 License:        GPLv2+
@@ -12,6 +12,7 @@ Source0:        https://github.com/keszybz/prelink/archive/%{commit}.tar.gz#/pre
 
 Patch0:         Add-PL_ARCH-for-AArch64.patch
 Patch1:         coverity.patch
+Patch2:         0001-add-riscv-support.patch
 
 BuildRequires:  elfutils-libelf-devel
 BuildRequires:  libselinux-devel, libselinux-utils
@@ -56,6 +57,9 @@ install -Dm0644 doc/execstack.8 %{buildroot}%{_mandir}/man8/execstack.8
 %{_mandir}/man8/execstack.8.*
 
 %changelog
+* Mon Jul 17 2023 zhangxiang <zhangxiang@iscas.ac.cn> - 0.5.0-19
+- add riscv64 support
+
 * Wed Mar 30 2022 jiangxinyu <jiangxinyu@kylinos.cn> - 0.5.0-18
 - Add url field
 
